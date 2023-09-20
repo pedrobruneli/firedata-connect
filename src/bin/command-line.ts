@@ -1,17 +1,28 @@
-import { CommandLine } from "../models/command-line.model.js";
+import { CommandLine } from '../models/command-line.model.js'
 
 export const parseCommandLine = <T>(args: string[]): CommandLine<T> => {
-  const result: CommandLine<T> = { _: [], version: false, ...{} as T };
-  for (let i = 0; i !== args.length; i++) {
-    if (!args[i]) continue;
-    if (args[i].startsWith("--")) {
-      const key = args[i].replace("--", "");
-      const value =
-        args[i + 1] && !args[i + 1].startsWith("--") ? args[i + 1] : true;
-      result[key] = value;
-    } else {
-      result._.push(args[i]);
-    }
+  const result: CommandLine<T> = {
+    _: [],
+    version: false,
+    ...({} as T),
+    projectId: '',
   }
-  return result;
-};
+  return args.reduce((acc, arg, index) => {
+    if (!arg) return acc
+    if (arg.startsWith('--')) {
+      const key = arg.replace('--', '')
+      const value =
+        args[index + 1] && !args[index + 1].startsWith('--')
+          ? args[index + 1]
+          : true
+      return {
+        ...acc,
+        [key]: value,
+      }
+    }
+    return {
+      ...acc,
+      _: [...acc._, arg],
+    }
+  }, result)
+}

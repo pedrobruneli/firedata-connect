@@ -1,4 +1,7 @@
-import { FirestoreExportCommands } from '../../models/command-line.model.js'
+import {
+  CommandLine,
+  FirestoreExportCommands,
+} from '../../models/command-line.model.js'
 import { FirestoreData } from '../../models/firestore.model.js'
 import { parseCommandLine } from '../command-line.js'
 import chalk from 'chalk'
@@ -72,8 +75,13 @@ const getFirestoreJsonData = async (): Promise<FirestoreData> => {
   return data
 }
 
-const startExport = async (commands: FirestoreExportCommands) => {
-  initializeFirebase(commands.emulators || 8085, commands.serviceAccount)
+const startExport = async (commands: CommandLine<FirestoreExportCommands>) => {
+  initializeFirebase(
+    commands.projectId,
+    commands.emulators || '127.0.0.1:8085',
+    commands.serviceAccount,
+    'firestore'
+  )
   const data = await getFirestoreJsonData()
   const paths = commands.path.split('/')
   if (paths[paths.length - 1].includes('.')) {
@@ -97,7 +105,9 @@ const handleHelp = () => {
   process.exit(0)
 }
 
-const handleCommands = async (commands: FirestoreExportCommands) => {
+const handleCommands = async (
+  commands: CommandLine<FirestoreExportCommands>
+) => {
   if (commands.help) handleHelp()
   if (!commands.path) {
     log(chalk.redBright('Path is required'))

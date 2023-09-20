@@ -98,14 +98,15 @@ const displayImportAlert = async (app: App, serviceAccount?: string) => {
   }
 }
 
-const importData = async (
-  path: string,
-  emulators: number,
-  serviceAccount?: string
-) => {
-  const data = readImportFile(path)
-  const app = await initializeFirebase(emulators, serviceAccount)
-  await displayImportAlert(app, serviceAccount)
+const importData = async (commands: CommandLine<FirestoreImportCommands>) => {
+  const data = readImportFile(commands.path)
+  const app = await initializeFirebase(
+    commands.projectId,
+    commands.emulators || '127.0.0.1:8085',
+    commands.serviceAccount,
+    'firestore'
+  )
+  await displayImportAlert(app, commands.serviceAccount)
   const collections = Object.keys(data.__collections)
   for (const collection of collections) {
     await importCollection(collection, data)
@@ -117,9 +118,9 @@ const handleHelp = () => {
   log(chalk.cyanBright('firedata-import firestore'))
   log(chalk.cyanBright('  --serviceAccount <path>'))
   log(chalk.cyanBright('  --path <path>'))
+  log(chalk.cyanBright('  --emulators <firestore ip>'))
   log(chalk.cyanBright('  --help'))
   log(chalk.cyanBright('  --version'))
-  log(chalk.cyanBright('  --emulators'))
 
   process.exit(0)
 }
@@ -144,10 +145,7 @@ const handleCommands = async (
     process.exit(1)
   }
 
-  const serviceAccount = commands.serviceAccount
-  const emulators = commands.emulators || 8085
-
-  await importData(path, emulators, serviceAccount)
+  await importData(commands)
 }
 
 export const firestoreImportStart = async () => {
