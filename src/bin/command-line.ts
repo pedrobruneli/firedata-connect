@@ -1,7 +1,7 @@
 import { CommandLine } from "../models/command-line.model.js";
 
 export const parseCommandLine = <T>(args: string[]): CommandLine<T> => {
-  const result: CommandLine<T> = { _: [] };
+  const result: CommandLine<T> = { _: [], version: false, ...{} as T };
   for (let i = 0; i !== args.length; i++) {
     if (!args[i]) continue;
     if (args[i].startsWith("--")) {

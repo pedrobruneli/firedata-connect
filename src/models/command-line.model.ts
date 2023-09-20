@@ -1,15 +1,22 @@
-export interface CommandLine<T extends Partial<T>> {
-  _: string[];
+export type CommandLine<T> = T & { _: string[]; version: boolean }
+
+export type FirestoreImportCommands = {
+  help: boolean
+  serviceAccount: string
+  path: string
+  emulators: number
 }
 
-export interface FirestoreImportCommands {
-  _: string[];
-  help: boolean;
-  h: boolean;
-  version: boolean;
-  v: boolean;
-  serviceAccount: string;
-  a: string;
-  path: string;
-  p: string;
+export type FirestoreExportCommands = {
+  help: boolean
+  serviceAccount: string
+  path: string
+  emulators: number
+}
+
+export type StorageExportCommands = {
+  help: boolean
+  serviceAccount: string
+  path: string
+  emulators: number
 }

@@ -3,14 +3,19 @@
   "version": "1.0.0",
   "description": "Simple firebase import and export",
   "exports": "./bin/index.js",
-  "type": "commonjs",
+  "type": "module",
   "engines": {
     "node": ">=16"
+  },
+  "bin": {
+    "firedata-import": "./dist/bin/import.js",
+    "firedata-export": "./dist/bin/export.js"
   },
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "start": "node dist/bin/import.js"
+    "firedata-export": "node ./dist/bin/export.js",
+    "firedata-import": "node ./dist/bin/import.js"
   },
   "repository": {
     "type": "git",
