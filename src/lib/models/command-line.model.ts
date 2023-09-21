@@ -2,6 +2,7 @@ export type CommandLine<T> = T & {
   _: string[]
   version: boolean
   projectId: string
+  y: boolean
 }
 
 export type FirestoreImportCommands = {

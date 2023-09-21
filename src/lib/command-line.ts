@@ -6,6 +6,7 @@ export const parseCommandLine = <T>(args: string[]): CommandLine<T> => {
     version: false,
     ...({} as T),
     projectId: '',
+    y: false,
   }
   return args.reduce((acc, arg, index) => {
     if (!arg) return acc

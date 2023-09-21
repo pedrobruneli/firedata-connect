@@ -28,7 +28,7 @@ const startImport = async (commands: CommandLine<StorageImportCommands>) => {
     commands.bucket,
     commands.serviceAccount
   )
-  await displayImportAlert(app, commands.serviceAccount)
+  await displayImportAlert(app, commands.serviceAccount, commands.y)
   await uploadFiles(commands.path)
   log(chalk.greenBright('Storage imported successfully'))
 }

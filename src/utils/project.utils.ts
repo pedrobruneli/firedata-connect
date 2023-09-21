@@ -15,7 +15,12 @@ export const catchVersion = () => {
   }
 }
 
-export const displayImportAlert = async (app: App, serviceAccount?: string) => {
+export const displayImportAlert = async (
+  app: App,
+  serviceAccount?: string,
+  ignore = false
+) => {
+  if (ignore) return
   serviceAccount &&
     log(chalk.yellow.bold('PROJECT ID:', app.options.projectId.toUpperCase()))
   log(

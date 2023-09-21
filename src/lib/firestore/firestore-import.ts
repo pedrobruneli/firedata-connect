@@ -92,7 +92,7 @@ const importData = async (commands: CommandLine<FirestoreImportCommands>) => {
     commands.emulators || '127.0.0.1:8085',
     commands.serviceAccount
   )
-  await displayImportAlert(app, commands.serviceAccount)
+  await displayImportAlert(app, commands.serviceAccount, commands.y)
   const collections = Object.keys(data.__collections)
   for (const collection of collections) {
     await importCollection(collection, data)
