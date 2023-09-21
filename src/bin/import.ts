@@ -1,6 +1,7 @@
 import { throwError } from './error-handling/error-handler.js'
 import { firestoreImportStart } from './firestore/firestore-import.js'
 import { catchVersion } from '../utils/project.utils.js'
+import { storageImportStart } from './storage/storage-import.js'
 
 const start = async () => {
   catchVersion()
@@ -10,7 +11,10 @@ const start = async () => {
     await firestoreImportStart()
     process.exit(0)
   }
-  if (type === 'storage') throw new Error('Not implemented yet')
+  if (type === 'storage') {
+    await storageImportStart()
+    process.exit(0)
+  }
   throwError('Invalid command')
 }
 start()

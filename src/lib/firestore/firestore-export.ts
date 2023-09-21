@@ -1,14 +1,15 @@
 import {
   CommandLine,
   FirestoreExportCommands,
-} from '../../models/command-line.model.js'
-import { FirestoreData } from '../../models/firestore.model.js'
+} from '../models/command-line.model.js'
+import { FirestoreData } from '../models/firestore.model.js'
 import { parseCommandLine } from '../command-line.js'
 import chalk from 'chalk'
 import { log } from 'console'
 import admin from 'firebase-admin'
-import { initializeFirebase } from '../start-firebase.js'
 import * as fs from 'fs'
+import { initializeFirestore } from '../start-firebase.js'
+import { createFolderIfDontExists } from '../../utils/file.utils.js'
 
 const treatFirebaseDatatype = (data: any): any => {
   if (!data) return data
@@ -76,24 +77,21 @@ const getFirestoreJsonData = async (): Promise<FirestoreData> => {
 }
 
 const startExport = async (commands: CommandLine<FirestoreExportCommands>) => {
-  initializeFirebase(
-    commands.projectId,
+  initializeFirestore(
     commands.emulators || '127.0.0.1:8085',
-    commands.serviceAccount,
-    'firestore'
+    commands.serviceAccount
   )
   const data = await getFirestoreJsonData()
   const paths = commands.path.split('/')
+  createFolderIfDontExists(commands.path)
   if (paths[paths.length - 1].includes('.')) {
-    fs.mkdirSync(paths.slice(0, paths.length - 1).join('/'), {
-      recursive: true,
-    })
     fs.writeFileSync(commands.path, JSON.stringify(data))
-    chalk.greenBright('Data exported successfully')
+    log(chalk.greenBright('Data exported successfully'))
     process.exit(0)
   }
-  fs.mkdirSync(commands.path, { recursive: true })
   fs.writeFileSync(commands.path + '/firestore.json', JSON.stringify(data))
+  log(chalk.greenBright('Data exported successfully'))
+  process.exit(0)
 }
 
 const handleHelp = () => {

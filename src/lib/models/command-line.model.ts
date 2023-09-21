@@ -23,6 +23,13 @@ export type StorageExportCommands = {
   serviceAccount: string
   path: string
   emulators: string
+  storageBucket: string
 }
 
-export type StorageImportCommands = {}
+export type StorageImportCommands = {
+  help: boolean
+  serviceAccount: string
+  path: string
+  emulators: string
+  storageBucket: string
+}

@@ -1,4 +1,4 @@
-import { CommandLine } from '../models/command-line.model.js'
+import { CommandLine } from './models/command-line.model.js'
 
 export const parseCommandLine = <T>(args: string[]): CommandLine<T> => {
   const result: CommandLine<T> = {

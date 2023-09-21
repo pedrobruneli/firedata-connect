@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import {
   CommandLine,
   FirestoreImportCommands,
-} from '../../models/command-line.model.js'
+} from '../models/command-line.model.js'
 import { parseCommandLine } from '../command-line.js'
 import { log } from 'console'
 import * as fs from 'fs'
@@ -11,12 +11,12 @@ import {
   FirestoreDocumentValue,
   FirestoreData,
   firestoreDataTypeMapper,
-} from '../../models/firestore.model.js'
+} from '../models/firestore.model.js'
 import { isJson } from '../../utils/file.utils.js'
-import { initializeFirebase } from '../start-firebase.js'
+import { initializeFirestore } from '../start-firebase.js'
 import admin from 'firebase-admin'
 import type { WithFieldValue, DocumentData } from 'firebase-admin/firestore'
-import type { App } from 'firebase-admin/app'
+import { displayImportAlert } from '../../utils/project.utils.js'
 
 const readImportFile = (path: string): FirestoreData => {
   if (!isJson(path)) throwError('File must be a json file')
@@ -38,6 +38,8 @@ const convertFirestoreDocumentValues = (
       if (value.__datatype__) {
         const datatype = value.__datatype__
         const val = value.value
+        if (!firestoreDataTypeMapper[datatype])
+          throwError(`Invalid datatype ${datatype}`)
         return {
           ...acc,
           [key]:
@@ -78,33 +80,11 @@ const importCollection = async (collection: string, data: FirestoreData) => {
   }
 }
 
-const displayImportAlert = async (app: App, serviceAccount?: string) => {
-  serviceAccount &&
-    log(chalk.yellow.bold('PROJECT ID:', app.options.projectId.toUpperCase()))
-  log(
-    chalk.red('You are about to import data to firestore to'),
-    chalk.red.bold(serviceAccount ? 'PRODUCTION' : 'EMULATORS')
-  )
-  log(chalk.red('This will overwrite any existing data'))
-  log(chalk.red('Are you sure you want to continue? (y/n)'))
-  const answer = await new Promise((resolve) => {
-    process.stdin.once('data', (data) => {
-      resolve(data.toString().trim())
-    })
-  })
-  if (answer !== 'y') {
-    log(chalk.red('Aborting'))
-    process.exit(0)
-  }
-}
-
 const importData = async (commands: CommandLine<FirestoreImportCommands>) => {
   const data = readImportFile(commands.path)
-  const app = await initializeFirebase(
-    commands.projectId,
+  const app = await initializeFirestore(
     commands.emulators || '127.0.0.1:8085',
-    commands.serviceAccount,
-    'firestore'
+    commands.serviceAccount
   )
   await displayImportAlert(app, commands.serviceAccount)
   const collections = Object.keys(data.__collections)
@@ -117,7 +97,7 @@ const importData = async (commands: CommandLine<FirestoreImportCommands>) => {
 const handleHelp = () => {
   log(chalk.cyanBright('firedata-import firestore'))
   log(chalk.cyanBright('  --serviceAccount <path>'))
-  log(chalk.cyanBright('  --path <path>'))
+  log(chalk.cyanBright('  --path <path to file>'))
   log(chalk.cyanBright('  --emulators <firestore ip>'))
   log(chalk.cyanBright('  --help'))
   log(chalk.cyanBright('  --version'))

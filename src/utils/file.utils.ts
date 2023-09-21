@@ -5,12 +5,13 @@ export const isJson = (path: string) => {
 }
 
 export const createFolderIfDontExists = (path: string): string => {
-  const paths = path.split('/')
+  const paths = path.includes('/') ? path.split('/') : path.split('\\')
   if (paths[paths.length - 1].includes('.')) {
     const destination = paths.slice(0, paths.length - 1).join('/')
-    fs.mkdirSync(destination, {
-      recursive: true,
-    })
+    if (destination)
+      fs.mkdirSync(destination, {
+        recursive: true,
+      })
     return destination
   }
   fs.mkdirSync(path, { recursive: true })
