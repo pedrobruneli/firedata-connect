@@ -7,17 +7,18 @@ import {
 } from '../models/command-line.model.js'
 import { displayImportAlert } from '../../utils/project.utils.js'
 import { initializeStorage } from '../start-firebase.js'
-import * as fs from 'fs'
+import * as fs from 'fs/promises'
 import admin from 'firebase-admin'
 
 const uploadFiles = async (path: string) => {
   log(chalk.greenBright('Importing storage...'))
   const bucket = admin.storage().bucket()
-  const files = fs.readdirSync(path, { recursive: true, withFileTypes: true })
+  const files = await fs.readdir(path, { withFileTypes: true, recursive: true })
   for (const file of files) {
     if (!file.name) return
-    const filePath = `${file.path}${file.name}`
-    await bucket.upload(filePath, { destination: filePath })
+    if (file.isDirectory()) continue
+    const filePath = `${file.path}/${file.name}`.replace(/\\/g, '/')
+    await bucket.upload(filePath, { destination: filePath.replace(path, '') })
   }
 }
 
