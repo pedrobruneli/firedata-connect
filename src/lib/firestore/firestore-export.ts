@@ -81,6 +81,7 @@ const startExport = async (commands: CommandLine<FirestoreExportCommands>) => {
     commands.emulators || '127.0.0.1:8085',
     commands.serviceAccount
   )
+  log(chalk.greenBright('Exporting firestore...'))
   const data = await getFirestoreJsonData()
   const paths = commands.path.split('/')
   createFolderIfDontExists(commands.path)

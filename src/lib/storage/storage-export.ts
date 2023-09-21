@@ -13,13 +13,17 @@ import { initializeStorage } from '../start-firebase.js'
 const getStorageFiles = async (
   commands: CommandLine<StorageExportCommands>
 ) => {
+  log(chalk.greenBright('Exporting storage...'))
   const bucket = admin.storage().bucket()
-  const destination = createFolderIfDontExists(commands.path)
-  const [files] = await bucket.getFiles()
+  const destination = createFolderIfDontExists(commands.dest)
+  const [files] = await bucket.getFiles({
+    prefix: commands.path || '',
+  })
   for (const file of files) {
     const filePath = file.name
     const finalDestination = path.join(destination, filePath)
     createFolderIfDontExists(finalDestination)
+    if (filePath.endsWith('/')) continue
     await file.download({ destination: finalDestination })
   }
 }
@@ -37,7 +41,8 @@ const startExport = async (commands: CommandLine<StorageExportCommands>) => {
 
 const handleHelp = () => {
   log(chalk.cyanBright('firedata-export storage'))
-  log(chalk.cyanBright('  --path <destination>'))
+  log(chalk.cyanBright('  --dest <destination>'))
+  log(chalk.cyanBright('  --path <path to export> -- default none'))
   log(chalk.cyanBright('  --serviceAccount <path>'))
   log(chalk.cyanBright('  --storageBucket <bucket>'))
   log(chalk.cyanBright('  --emulators <port> -- default 9199'))
@@ -47,8 +52,8 @@ const handleHelp = () => {
 
 const handleCommands = async (commands: CommandLine<StorageExportCommands>) => {
   if (commands.help) handleHelp()
-  if (!commands.path) {
-    log(chalk.redBright('Path is required'))
+  if (!commands.dest) {
+    log(chalk.redBright('Destination is required'))
     process.exit(1)
   }
   if (!commands.storageBucket) {

@@ -35,6 +35,11 @@ const convertFirestoreDocumentValues = (
   const convertedData: WithFieldValue<DocumentData> = keys.reduce(
     (acc, key) => {
       const value = data[key]
+      if (!value)
+        return {
+          ...acc,
+          [key]: value,
+        }
       if (value.__datatype__) {
         const datatype = value.__datatype__
         const val = value.value
@@ -71,6 +76,7 @@ const importDocument = async (
 }
 
 const importCollection = async (collection: string, data: FirestoreData) => {
+  log(chalk.greenBright('Importing firestore...'))
   const collectionRef = admin.firestore().collection(collection)
   const documents = Object.keys(data.__collections[collection])
   for (const document of documents) {

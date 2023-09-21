@@ -11,6 +11,7 @@ import * as fs from 'fs'
 import admin from 'firebase-admin'
 
 const uploadFiles = async (path: string) => {
+  log(chalk.greenBright('Importing storage...'))
   const bucket = admin.storage().bucket()
   const files = fs.readdirSync(path, { recursive: true, withFileTypes: true })
   for (const file of files) {
