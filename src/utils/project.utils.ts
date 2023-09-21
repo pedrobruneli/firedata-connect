@@ -20,7 +20,7 @@ export const displayImportAlert = async (
   serviceAccount?: string,
   ignore = false
 ) => {
-  if (ignore) return
+  if (ignore && !serviceAccount) return
   serviceAccount &&
     log(chalk.yellow.bold('PROJECT ID:', app.options.projectId.toUpperCase()))
   log(
