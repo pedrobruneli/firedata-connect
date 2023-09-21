@@ -24,6 +24,7 @@ export type StorageExportCommands = {
   path: string
   emulators: string
   storageBucket: string
+  dest: string
 }
 
 export type StorageImportCommands = {

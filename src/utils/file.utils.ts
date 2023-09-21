@@ -5,7 +5,8 @@ export const isJson = (path: string) => {
 }
 
 export const createFolderIfDontExists = (path: string): string => {
-  const paths = path.includes('/') ? path.split('/') : path.split('\\')
+  const formattedPath = path.replace(/\\/g, '/')
+  const paths = formattedPath.split('/')
   if (paths[paths.length - 1].includes('.')) {
     const destination = paths.slice(0, paths.length - 1).join('/')
     if (destination)
@@ -14,6 +15,6 @@ export const createFolderIfDontExists = (path: string): string => {
       })
     return destination
   }
-  fs.mkdirSync(path, { recursive: true })
-  return path
+  fs.mkdirSync(formattedPath, { recursive: true })
+  return formattedPath
 }
