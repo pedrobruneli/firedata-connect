@@ -32,7 +32,7 @@ const startExport = async (commands: CommandLine<StorageExportCommands>) => {
   initializeStorage(
     commands.projectId,
     commands.emulators || '127.0.0.1:9199',
-    commands.storageBucket,
+    commands.bucket,
     commands.serviceAccount
   )
   await getStorageFiles(commands)
@@ -44,7 +44,7 @@ const handleHelp = () => {
   log(chalk.cyanBright('  --dest <destination>'))
   log(chalk.cyanBright('  --path <path to export> -- default none'))
   log(chalk.cyanBright('  --serviceAccount <path>'))
-  log(chalk.cyanBright('  --storageBucket <bucket>'))
+  log(chalk.cyanBright('  --bucket <bucket>'))
   log(chalk.cyanBright('  --emulators <port> -- default 9199'))
   log(chalk.cyanBright('  --help'))
   process.exit(0)
@@ -56,7 +56,7 @@ const handleCommands = async (commands: CommandLine<StorageExportCommands>) => {
     log(chalk.redBright('Destination is required'))
     process.exit(1)
   }
-  if (!commands.storageBucket) {
+  if (!commands.bucket) {
     log(chalk.redBright('Storage bucket is required'))
     process.exit(1)
   }

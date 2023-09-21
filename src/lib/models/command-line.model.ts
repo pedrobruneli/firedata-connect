@@ -23,7 +23,7 @@ export type StorageExportCommands = {
   serviceAccount: string
   path: string
   emulators: string
-  storageBucket: string
+  bucket: string
   dest: string
 }
 
@@ -32,5 +32,5 @@ export type StorageImportCommands = {
   serviceAccount: string
   path: string
   emulators: string
-  storageBucket: string
+  bucket: string
 }
