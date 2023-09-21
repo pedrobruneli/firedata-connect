@@ -25,7 +25,7 @@ const startImport = async (commands: CommandLine<StorageImportCommands>) => {
   const app = await initializeStorage(
     commands.projectId,
     commands.emulators || '127.0.0.1:9199',
-    commands.storageBucket,
+    commands.bucket,
     commands.serviceAccount
   )
   await displayImportAlert(app, commands.serviceAccount)
@@ -48,7 +48,7 @@ const handleCommands = async (commands: CommandLine<StorageImportCommands>) => {
     log(chalk.redBright('Path is required'))
     process.exit(1)
   }
-  if (!commands.storageBucket) {
+  if (!commands.bucket) {
     log(chalk.redBright('Storage bucket is required'))
     process.exit(1)
   }
