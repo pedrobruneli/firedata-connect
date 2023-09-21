@@ -1,7 +1,8 @@
+#!/usr/bin/env node
+import { throwError } from '../lib/error-handling/error-handler.js'
+import { firestoreExportStart } from '../lib/firestore/firestore-export.js'
+import { storageExportStart } from '../lib/storage/storage-export.js'
 import { catchVersion } from '../utils/project.utils.js'
-import { throwError } from './error-handling/error-handler.js'
-import { firestoreExportStart } from './firestore/firestore-export.js'
-import { storageExportStart } from './storage/storage-export.js'
 
 const start = async () => {
   catchVersion()
@@ -18,3 +19,5 @@ const start = async () => {
   throwError('Invalid command')
 }
 start()
+
+export default start

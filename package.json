@@ -2,11 +2,14 @@
   "name": "firedata-connect",
   "version": "1.0.0",
   "description": "Simple firebase import and export",
-  "exports": "./bin/index.js",
   "type": "module",
+  "main": "./dist/bin/index.js",
   "engines": {
     "node": ">=16"
   },
+  "files": [
+    "dist"
+  ],
   "bin": {
     "firedata-import": "./dist/bin/import.js",
     "firedata-export": "./dist/bin/export.js"
