@@ -13,6 +13,7 @@ import { createFolderIfDontExists } from '../../utils/file.utils.js'
 
 const treatFirebaseDatatype = (data: any): any => {
   if (!data) return data
+  if (Array.isArray(data)) return data
   if (data instanceof admin.firestore.Timestamp) {
     return {
       __datatype__: 'timestamp',

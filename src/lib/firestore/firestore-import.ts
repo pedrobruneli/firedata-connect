@@ -51,6 +51,12 @@ const convertFirestoreDocumentValues = (
             firestoreDataTypeMapper[datatype](...Object.values(val)) || val,
         }
       }
+      if (Array.isArray(value)) {
+        return {
+          ...acc,
+          [key]: value,
+        }
+      }
       if (typeof value === 'object') {
         return {
           ...acc,
@@ -76,7 +82,6 @@ const importDocument = async (
 }
 
 const importCollection = async (collection: string, data: FirestoreData) => {
-  log(chalk.greenBright('Importing firestore...'))
   const collectionRef = admin.firestore().collection(collection)
   const documents = Object.keys(data.__collections[collection])
   for (const document of documents) {
@@ -93,6 +98,7 @@ const importData = async (commands: CommandLine<FirestoreImportCommands>) => {
     commands.serviceAccount
   )
   await displayImportAlert(app, commands.serviceAccount, commands.y)
+  log(chalk.greenBright('Importing firestore...'))
   const collections = Object.keys(data.__collections)
   for (const collection of collections) {
     await importCollection(collection, data)
