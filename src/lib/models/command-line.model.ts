@@ -5,33 +5,22 @@ export type CommandLine<T> = T & {
   y: boolean
 }
 
-export type FirestoreImportCommands = {
+type BaseCommands = {
   help: boolean
   serviceAccount: string
   path: string
   emulators: string
 }
 
-export type FirestoreExportCommands = {
-  help: boolean
-  serviceAccount: string
-  path: string
-  emulators: string
-}
+export type FirestoreImportCommands = BaseCommands & {}
 
-export type StorageExportCommands = {
-  help: boolean
-  serviceAccount: string
-  path: string
-  emulators: string
+export type FirestoreExportCommands = BaseCommands & {}
+
+export type StorageExportCommands = BaseCommands & {
   bucket: string
   dest: string
 }
 
-export type StorageImportCommands = {
-  help: boolean
-  serviceAccount: string
-  path: string
-  emulators: string
+export type StorageImportCommands = BaseCommands & {
   bucket: string
 }

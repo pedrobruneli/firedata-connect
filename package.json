@@ -1,6 +1,6 @@
 {
   "name": "firedata-connect",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Simple firebase import and export",
   "type": "module",
   "main": "./dist/bin/index.js",

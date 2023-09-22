@@ -17,8 +17,13 @@ const uploadFiles = async (path: string) => {
   for (const file of files) {
     if (!file.name) return
     if (file.isDirectory()) continue
-    const filePath = `${file.path}/${file.name}`.replace(/\\/g, '/')
-    await bucket.upload(filePath, { destination: filePath.replace(path, '') })
+    const filePath = `${file.path && `${file.path}/`}${file.name}`.replace(
+      /\\/g,
+      '/'
+    )
+    await bucket.upload(filePath, {
+      destination: filePath.replace(`${path}/`, ''),
+    })
   }
 }
 
@@ -39,6 +44,7 @@ const handleHelp = () => {
   log(chalk.cyanBright('  --path <path to files/folders>'))
   log(chalk.cyanBright('  --serviceAccount <path>'))
   log(chalk.cyanBright('  --emulators <port> -- default 9199'))
+  log(chalk.cyanBright('  --bucket <bucket>'))
   log(chalk.cyanBright('  --help'))
   process.exit(0)
 }

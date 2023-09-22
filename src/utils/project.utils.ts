@@ -2,14 +2,19 @@ import chalk from 'chalk'
 import { log } from 'console'
 import { App } from 'firebase-admin/app'
 import * as fs from 'fs'
+import { dirname, resolve } from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 export const catchVersion = () => {
   if (!process.argv.slice(2).length) return
   const version = process.argv.slice(2)[0].includes('version')
   if (version) {
-    const version = JSON.parse(
-      fs.readFileSync('node_modules/firedata-connect/package.json', 'utf8')
-    ).version
+    const { version } = JSON.parse(
+      fs.readFileSync(resolve(__dirname, '../../package.json'), 'utf8')
+    )
     log(chalk.cyanBright('firedata-connect version', version))
     process.exit(0)
   }
