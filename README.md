@@ -12,9 +12,9 @@ Firedata Connect is a simple firebase import and export data library
   pnpm i --save-dev firedata-connect@latest
 ```
     
-## Documentação da API
+## API documentation
 
-#### Faz o import dos dados do firestore
+#### Firestore data import command
 
 ```bash
   firedata-import firestore --path firebase-data.json --serviceAccount serviceAccount.json
@@ -28,7 +28,7 @@ Firedata Connect is a simple firebase import and export data library
 | `--help` | **Optional**. Open the commands list | -  |
 | `--version` | **Optional**. Shows your current lib version | -  |
 
-#### Faz o export dos dados do firestore
+####  Firestore data export command
 
 ```bash
   firedata-export firestore --path firebase-data.json --serviceAccount serviceAccount.json
@@ -42,7 +42,7 @@ Firedata Connect is a simple firebase import and export data library
 | `--help` | **Optional**. Open the commands list | -  |
 | `--version` | **Optional**. Shows your current lib version | -  |
 
-#### Faz o import dos dados do storage
+#### Storage data import command
 
 ```bash
   firedata-import storage --path storage-data-folder/ --bucket example-project.appspot.com --projectId example-project --serviceAccount serviceAccount.json
@@ -58,7 +58,7 @@ Firedata Connect is a simple firebase import and export data library
 | `--help` | **Optional**. Open the commands list | -  |
 | `--version` | **Optional**. Shows your current lib version | -  |
 
-#### Faz o export dos dados do storage
+#### Storage data export command
 
 ```bash
   firedata-export storage --dest destination-folder/ --bucket example-project.appspot.com --projectId example-project --serviceAccount serviceAccount.json
