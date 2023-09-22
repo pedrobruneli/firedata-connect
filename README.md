@@ -75,6 +75,35 @@ Firedata Connect is a simple firebase import and export data library
 | `--help` | **Optional**. Open the commands list | -  |
 | `--version` | **Optional**. Shows your current lib version | -  |
 
+## Examples
+
+#### Firestore data JSON example:
+
+```json
+{
+  "__collections": {
+    "Collection": {
+      "documentId": {
+        "docReference": {
+          "__datatype__": "reference",
+          "value": { "path": "collection/anotherdocumentid" }
+        },
+        "test": "test",
+        "created_at": {
+          "__datatype__": "timestamp",
+          "value": { "seconds": 1695343756, "nanoseconds": 508000000 }
+        },
+        "geolocation": {
+          "__datatype__": "geopoint",
+          "value": { "latitude": 25, "longitude": 71 }
+        }
+      }
+    }
+  }
+}
+```
+
+
 ## Contribuiting
 
 Be free to open an issue or pull request!
